@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @Getter
@@ -15,6 +15,6 @@ public class Booking {
     private String email;
     private Integer numeroChambre;
     private String description;
-    private Instant dateReservation;
+    private LocalDate dateReservation;
 
 }

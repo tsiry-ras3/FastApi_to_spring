@@ -1,10 +1,9 @@
 package com.exemple.fastapi_spring.controller;
 
 import com.exemple.fastapi_spring.model.Booking;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -23,9 +22,27 @@ public class BookingController {
         return bookings;
     }
 
+//    @PostMapping("/booking")
+//    public List<Booking> createBooking(@RequestBody List<Booking> newBookings) {
+//        bookings.addAll(newBookings);
+//        return bookings;
+//    }
+
     @PostMapping("/booking")
-    public List<Booking> createBooking(@RequestBody List<Booking> booking) {
-        bookings.addAll(booking);
-        return bookings;
+    public ResponseEntity<?> updateBooking(@RequestBody List<Booking> newBookings) {
+        for (Booking newBooking : newBookings) {
+            for (Booking existingBooking : bookings) {
+                if (existingBooking.getNumeroChambre() == newBooking.getNumeroChambre()
+                        && existingBooking.getDateReservation().equals(newBooking.getDateReservation())) {
+                    return ResponseEntity
+                            .status(HttpStatus.CONFLICT)
+                            .body("Erreur chambre deja occupe");
+                }
+            }
+
+        }
+        bookings.addAll(newBookings);
+        return ResponseEntity.ok(bookings);
+
     }
 }
