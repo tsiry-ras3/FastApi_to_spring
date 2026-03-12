@@ -30,6 +30,12 @@ public class BookingController {
 
     @PostMapping("/booking")
     public ResponseEntity<?> updateBooking(@RequestBody List<Booking> newBookings) {
+        for (Booking booking : newBookings) {
+            if (booking.getNumeroChambre() > 9 || booking.getNumeroChambre() < 1) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Les chambres sont numérotées uniquement de 1 à 9. " +
+                        "Veuiller verifier le numero de chambre");
+            }
+        }
         for (Booking newBooking : newBookings) {
             for (Booking existingBooking : bookings) {
                 if (existingBooking.getNumeroChambre() == newBooking.getNumeroChambre()
